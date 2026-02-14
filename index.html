@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Flowy Bouquet for You</title>
+    <style>
+        :root {
+            --bg-color: #fff0f3;
+            --rose-red: #d00000;
+            --leaf-green: #2d6a4f;
+            --stem-green: #40916c;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .bouquet {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        /* The gentle swaying animation */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-2deg) translateY(0); }
+            50% { transform: rotate(2deg) translateY(-10px); }
+        }
+
+        .rose {
+            position: absolute;
+            transform-origin: bottom center;
+            animation: sway 4s ease-in-out infinite;
+        }
+
+        /* Positioning individual roses to look like a bouquet */
+        .rose-1 { left: -60px; animation-delay: 0s; }
+        .rose-2 { left: 0px; animation-delay: 0.5s; z-index: 2; }
+        .rose-3 { left: 60px; animation-delay: 1.2s; }
+
+        /* Rose Petal Shapes using SVG styling */
+        .flower-head {
+            fill: var(--rose-red);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        }
+
+        .stem {
+            stroke: var(--stem-green);
+            stroke-width: 4;
+            fill: none;
+        }
+
+        .leaf {
+            fill: var(--leaf-green);
+        }
+
+        .message {
+            position: absolute;
+            bottom: -80px;
+            font-family: 'Georgia', serif;
+            color: #a4133c;
+            font-style: italic;
+            text-align: center;
+            width: 300px;
+            opacity: 0;
+            animation: fadeIn 2s forwards 1s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; bottom: -50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bouquet" id="bouquet">
+        </div>
+
+    <script>
+        const bouquet = document.getElementById('bouquet');
+        
+        // Simple SVG template for a single rose
+        const createRose = (className) => {
+            return `
+            <div class="rose ${className}">
+                <svg width="120" height="250" viewBox="0 0 120 250">
+                    <path class="stem" d="M60,250 Q70,150 60,80" />
+                    <ellipse class="leaf" cx="45" cy="180" rx="15" ry="7" transform="rotate(-30 45 180)" />
+                    <ellipse class="leaf" cx="75" cy="140" rx="15" ry="7" transform="rotate(30 75 140)" />
+                    <g class="flower-head">
+                        <circle cx="60" cy="60" r="30" />
+                        <circle cx="45" cy="50" r="20" />
+                        <circle cx="75" cy="50" r="20" />
+                        <circle cx="60" cy="40" r="20" />
+                        <circle cx="60" cy="60" r="10" fill="#900000" />
+                    </g>
+                </svg>
+            </div>`;
+        };
+
+        // Add 3 roses to the bouquet
+        bouquet.innerHTML += createRose('rose-1');
+        bouquet.innerHTML += createRose('rose-2');
+        bouquet.innerHTML += createRose('rose-3');
+
+        // Add a message
+        const note = document.createElement('div');
+        note.className = 'message';
+        note.innerText = "A digital bouquet for a blooming day.";
+        bouquet.appendChild(note);
+    </script>
+</body>
+</html>
