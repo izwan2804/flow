@@ -3,119 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Flowy Bouquet for You</title>
+    <title>Magical Rose Bouquet</title>
     <style>
         :root {
-            --bg-color: #fff0f3;
-            --rose-red: #d00000;
-            --leaf-green: #2d6a4f;
-            --stem-green: #40916c;
+            --rose-dark: #8b0000;
+            --rose-med: #d00000;
+            --rose-light: #ff4d6d;
+            --leaf-dark: #1b4332;
+            --leaf-mid: #2d6a4f;
+            --wrap: #f8edeb;
+            --gold: #ffd700;
         }
 
         body {
-            background-color: var(--bg-color);
+            background: radial-gradient(circle at center, #fffafa 0%, #ffe3e3 100%);
             margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
+            font-family: 'Georgia', serif;
         }
 
-        .bouquet {
+        .container {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: flex-end;
+            height: 450px;
         }
 
-        /* The gentle swaying animation */
-        @keyframes sway {
-            0%, 100% { transform: rotate(-2deg) translateY(0); }
-            50% { transform: rotate(2deg) translateY(-10px); }
-        }
-
-        .rose {
+        /* --- THE BOUQUET --- */
+        .wrapper {
             position: absolute;
+            bottom: -30px;
+            width: 140px;
+            height: 220px;
+            background: var(--wrap);
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+            z-index: 10;
+            box-shadow: inset 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 1px solid #ddd;
+        }
+
+        .rose-unit {
+            position: absolute;
+            bottom: 100px;
             transform-origin: bottom center;
-            animation: sway 4s ease-in-out infinite;
+            animation: sway 6s ease-in-out infinite alternate;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Positioning individual roses to look like a bouquet */
-        .rose-1 { left: -60px; animation-delay: 0s; }
-        .rose-2 { left: 0px; animation-delay: 0.5s; z-index: 2; }
-        .rose-3 { left: 60px; animation-delay: 1.2s; }
+        /* Rose Positions */
+        .r1 { left: -55px; animation-delay: 0s; z-index: 5; }
+        .r2 { left: 0px; animation-delay: -1s; z-index: 7; }
+        .r3 { left: 55px; animation-delay: -2s; z-index: 6; }
+        .r4 { left: -30px; animation-delay: -3s; z-index: 4; margin-bottom: 40px; }
+        .r5 { left: 30px; animation-delay: -4s; z-index: 4; margin-bottom: 40px; }
 
-        /* Rose Petal Shapes using SVG styling */
-        .flower-head {
-            fill: var(--rose-red);
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        /* --- THE ROSE ART --- */
+        .rose-head {
+            position: relative;
+            width: 70px;
+            height: 65px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
         }
+
+        .petal {
+            position: absolute;
+            background: radial-gradient(circle, var(--rose-med), var(--rose-dark));
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            border: 0.5px solid rgba(0,0,0,0.1);
+        }
+
+        /* Layering petals for depth */
+        .p1 { width: 60px; height: 50px; top: 10px; left: 5px; transform: rotate(0deg); }
+        .p2 { width: 50px; height: 60px; top: 0px; left: 10px; transform: rotate(90deg); }
+        .p3 { width: 45px; height: 45px; top: 10px; left: 12px; background: var(--rose-light); z-index: 2; opacity: 0.9; }
+        .center { width: 20px; height: 20px; top: 22px; left: 25px; background: #5a0000; border-radius: 50%; z-index: 3; }
 
         .stem {
-            stroke: var(--stem-green);
-            stroke-width: 4;
-            fill: none;
+            width: 5px;
+            height: 250px;
+            background: linear-gradient(to right, var(--leaf-dark), var(--leaf-mid));
+            border-radius: 2px;
         }
 
-        .leaf {
-            fill: var(--leaf-green);
+        /* --- ANIMATIONS --- */
+        @keyframes sway {
+            0% { transform: rotate(-2deg) scale(1); }
+            100% { transform: rotate(2deg) scale(1.02); }
         }
 
-        .message {
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--gold);
+            animation: flash 2s infinite;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Falling Petals */
+        .falling-petal {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: var(--rose-med);
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.8;
+            top: -20px;
+            z-index: 20;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); left: 10%; }
+            100% { transform: translateY(110vh) rotate(360deg); left: 90%; }
+        }
+
+        .text {
             position: absolute;
             bottom: -80px;
-            font-family: 'Georgia', serif;
-            color: #a4133c;
+            color: var(--rose-dark);
+            font-size: 1.2rem;
             font-style: italic;
             text-align: center;
-            width: 300px;
-            opacity: 0;
-            animation: fadeIn 2s forwards 1s;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; bottom: -50px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bouquet" id="bouquet">
-        </div>
+    <div class="container">
+        <div class="wrapper"></div>
+        
+        <div id="flower-target"></div>
+
+        <div class="text">Always blooming for you.</div>
+    </div>
 
     <script>
-        const bouquet = document.getElementById('bouquet');
+        const target = document.getElementById('flower-target');
         
-        // Simple SVG template for a single rose
-        const createRose = (className) => {
-            return `
-            <div class="rose ${className}">
-                <svg width="120" height="250" viewBox="0 0 120 250">
-                    <path class="stem" d="M60,250 Q70,150 60,80" />
-                    <ellipse class="leaf" cx="45" cy="180" rx="15" ry="7" transform="rotate(-30 45 180)" />
-                    <ellipse class="leaf" cx="75" cy="140" rx="15" ry="7" transform="rotate(30 75 140)" />
-                    <g class="flower-head">
-                        <circle cx="60" cy="60" r="30" />
-                        <circle cx="45" cy="50" r="20" />
-                        <circle cx="75" cy="50" r="20" />
-                        <circle cx="60" cy="40" r="20" />
-                        <circle cx="60" cy="60" r="10" fill="#900000" />
-                    </g>
-                </svg>
-            </div>`;
-        };
+        // Create 5 roses
+        for(let i=1; i<=5; i++) {
+            const rose = document.createElement('div');
+            rose.className = `rose-unit r${i}`;
+            rose.innerHTML = `
+                <div class="rose-head">
+                    <div class="petal p1"></div>
+                    <div class="petal p2"></div>
+                    <div class="petal p3"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="stem"></div>
+            `;
+            target.appendChild(rose);
+        }
 
-        // Add 3 roses to the bouquet
-        bouquet.innerHTML += createRose('rose-1');
-        bouquet.innerHTML += createRose('rose-2');
-        bouquet.innerHTML += createRose('rose-3');
+        // Generate Random Sparkles
+        function createSparkle() {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random() * 200 - 100 + 'px';
+            s.style.top = Math.random() * 200 - 100 + 'px';
+            s.style.animationDelay = Math.random() * 2 + 's';
+            document.querySelector('.container').appendChild(s);
+            setTimeout(() => s.remove(), 2000);
+        }
+        setInterval(createSparkle, 300);
 
-        // Add a message
-        const note = document.createElement('div');
-        note.className = 'message';
-        note.innerText = "A digital bouquet for a blooming day.";
-        bouquet.appendChild(note);
+        // Generate Falling Petals
+        function createFallingPetal() {
+            const p = document.createElement('div');
+            p.className = 'falling-petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            p.style.opacity = Math.random();
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 7000);
+        }
+        setInterval(createFallingPetal, 1000);
     </script>
 </body>
 </html>
